@@ -1,5 +1,6 @@
 package com.gtsasil.dscatalog3.resources;
 
+import com.gtsasil.dscatalog3.dto.CategoryDTO;
 import com.gtsasil.dscatalog3.entities.Category;
 import com.gtsasil.dscatalog3.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class CategoryResource {
     private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findaAll(){
-        List<Category> list = service.findAll();
+    public ResponseEntity<List<CategoryDTO>> findaAll(){
+        List<CategoryDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 }
