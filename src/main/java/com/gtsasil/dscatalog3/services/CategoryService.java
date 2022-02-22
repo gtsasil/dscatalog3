@@ -5,6 +5,8 @@ import com.gtsasil.dscatalog3.entities.Category;
 import com.gtsasil.dscatalog3.repositories.CategoryRepository;
 import com.gtsasil.dscatalog3.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +46,7 @@ public class CategoryService {
         return new CategoryDTO(entity);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public CategoryDTO update(Long id, CategoryDTO dto) {
         try {
             Category entity = repository.getOne(id);
@@ -53,6 +55,16 @@ public class CategoryService {
             return new CategoryDTO(entity);
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found" +id);
+        }
+    }
+
+    public void delete(Long id) {
+        try{
+            repository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("id not found " + id);
+        }catch(DataIntegrityViolationException e){
+            throw  new DataIntegrityViolationException("Integrity Violation");
         }
     }
 }
